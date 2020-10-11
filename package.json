@@ -1,0 +1,23 @@
+{
+  "name": "videogames-graphql-backend",
+  "version": "1.0.0",
+  "description": "GraphQl App for videogames frontend",
+  "main": "build/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "GraphQl",
+    "Stripe",
+    "Node"
+  ],
+  "author": "Gabriel Quispe Rosas",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
+  },
+  "dependencies": {
+    "typescript": "^4.0.3"
+  }
+}
