@@ -1,21 +1,32 @@
-import express from "express";
-import cors from "cors";
-import compression from "compression";
-import { createServer } from "http";
+import express from 'express';
+import cors from 'cors';
+import compression from 'compression';
+import { createServer } from 'http';
 
-const app = express();
-app.use("*", cors());
-app.use(compression());
+import environments from './config/environments';
+//Configuracion de las variables de entorno (lectura)
+if (process.env.NODE_ENV !== 'production') {
+  const env = environments;
+  console.log(env);
+}
 
-app.get("/", (req, res) => {
-  res.send("PROBANDO");
-});
+const init = async () => {
+  const app = express();
+  app.use('*', cors());
+  app.use(compression());
 
-const httpServer = createServer(app);
+  app.get('/', (req, res) => {
+    res.send('PROBANDO xd');
+  });
 
-httpServer.listen(
-  {
-    port: 3000,
-  },
-  () => console.log("Servidor levantado en http://localhost:3000")
-);
+  const httpServer = createServer(app);
+  const PORT = process.env.PORT || 4000;
+  httpServer.listen(
+    {
+      port: PORT,
+    },
+    () => console.log(`Servidor levantado en http://localhost:${PORT}`)
+  );
+};
+
+init();
