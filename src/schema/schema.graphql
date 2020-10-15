@@ -4,6 +4,11 @@ type Query {
     users: [User!]!
 }
 
+"Opciones Crud"
+type Mutation {
+    register(user: UserInput): Boolean
+}
+
 """
 Especificar informacion detallada del usuario
 email = usuario de la base de datos
@@ -17,4 +22,21 @@ type User {
     password: String!
     registerDate: String!
     birthdate: String!
+    role: Role!
+}
+
+"Input para añadir los datos del usuario en el registro"
+input UserInput {
+    id: ID
+    name: String!
+    lastname: String!
+    emai: String!
+    password: String!
+    birthdate: String!
+    role: Role=CLIENT
+}
+
+enum Role {
+    CLIENT,
+    ADMIN
 }
