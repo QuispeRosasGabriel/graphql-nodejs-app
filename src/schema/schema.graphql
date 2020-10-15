@@ -6,7 +6,7 @@ type Query {
 
 "Opciones Crud"
 type Mutation {
-    register(user: UserInput): Boolean
+    register(user: UserInput): User
 }
 
 """
