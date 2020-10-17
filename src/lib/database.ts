@@ -16,6 +16,7 @@ class Database {
             console.log(`DB: ${chalk.greenBright(db.databaseName)}`);
             
         }
+        return db;
     }
 }
 
