@@ -1,5 +1,6 @@
 import { IResolvers } from 'graphql-tools';
 import { COLLECTIONS } from '../config/constants';
+import { JWT } from '../lib/jwt';
 
 const resolversQuery: IResolvers = {
     Query: {
@@ -22,18 +23,27 @@ const resolversQuery: IResolvers = {
         },
         async login(root, {email, password},{db}){
             try {
+                const emailVerification = await db.collection(COLLECTIONS.USERS)
+                .findOne({email});
+                if(!emailVerification){
+                        return {
+                            status: false,
+                            message: 'Usuario no existe',
+                            token: null
+                        } 
+                } 
                 const user = await db.collection(COLLECTIONS.USERS)
                 .findOne({email, password}) 
                 return{
                     status: true,
-                    message: (user ? 'Lista de usuarios cargada corretamente' : 'Credenciales incorrectas, sesión no iniciada'),
-                    user
+                    message: (user ? 'Usuario cargado  corretamente' : 'Credenciales incorrectas, sesión no iniciada'),
+                    token: (user ? new JWT().sign({user})  : null)
                 }
             } catch (error) {
                 return {
                     status: false,
                     message: error,
-                    user: null
+                    token: null
                 }
             }
 

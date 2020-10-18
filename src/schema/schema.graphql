@@ -27,7 +27,7 @@ type ResultUsers implements Result {
 type ResultLogin implements Result {
     status: Boolean!
     message: String!
-    user: User
+    token: String
 }
 """
 Especificar informacion detallada del usuario
