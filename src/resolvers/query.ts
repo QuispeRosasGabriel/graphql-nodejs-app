@@ -25,6 +25,7 @@ const resolversQuery: IResolvers = {
             try {
                 const emailVerification = await db.collection(COLLECTIONS.USERS)
                 .findOne({email});
+               
                 if(!emailVerification){
                         return {
                             status: false,
@@ -32,8 +33,16 @@ const resolversQuery: IResolvers = {
                             token: null
                         } 
                 } 
+               
                 const user = await db.collection(COLLECTIONS.USERS)
-                .findOne({email, password}) 
+                .findOne({email, password})
+               
+                if(user){
+                    delete user.password;
+                    delete user.birthdate;
+                    delete user.registerDate;
+                } 
+
                 return{
                     status: true,
                     message: (user ? 'Usuario cargado  corretamente' : 'Credenciales incorrectas, sesión no iniciada'),

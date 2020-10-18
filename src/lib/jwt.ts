@@ -1,13 +1,13 @@
-import { SECRET_KEY, MESSAGES } from "../config/constants";
+import { SECRET_KEY, MESSAGES, EXPIRETIME } from "../config/constants";
 import jwt from 'jsonwebtoken'
 import { IJwt } from "../interfaces/jwt.interface";
 
 export class JWT {
     private secretKey = SECRET_KEY as string;
 
-    public sign(data: IJwt){
+    public sign(data: IJwt, expiresIn: number = EXPIRETIME.H24){
         return jwt.sign({user: data.user}, 
-            this.secretKey, {expiresIn: 24*60*60}) 
+            this.secretKey, {expiresIn}) 
     }
 
     public verify(token: string) {
