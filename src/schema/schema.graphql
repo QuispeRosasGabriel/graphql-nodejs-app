@@ -1,7 +1,9 @@
 "Definiciones de los tipos de raiz"
 type Query {
     "Lista de usuarios registrados en la base de datos (Clientes/Adminsitradores)"
-    users: [User!]!
+    users: ResultUsers
+    "Para iniciar sesion de usuario"
+    login(email: String!, password: String!): ResultLogin
 }
 
 "Opciones Crud"
@@ -9,6 +11,24 @@ type Mutation {
     register(user: UserInput): User
 }
 
+"Interface para especificar las propiedades obligatorias"
+interface Result{
+    status: Boolean!
+    message: String!
+}
+
+type ResultUsers implements Result {
+    status: Boolean!
+    message: String!
+    users: [User!]!
+}
+
+
+type ResultLogin implements Result {
+    status: Boolean!
+    message: String!
+    user: User
+}
 """
 Especificar informacion detallada del usuario
 email = usuario de la base de datos
@@ -18,7 +38,7 @@ type User {
     id: ID!
     name: String!
     lastname: String!
-    emai: String!
+    email: String!
     password: String!
     registerDate: String!
     birthdate: String!
@@ -30,7 +50,7 @@ input UserInput {
     id: ID
     name: String!
     lastname: String!
-    emai: String!
+    email: String!
     password: String!
     birthdate: String!
     role: Role=CLIENT
