@@ -8,7 +8,7 @@ type Query {
 
 "Opciones Crud"
 type Mutation {
-    register(user: UserInput): User
+    register(user: UserInput): ResultUser
 }
 
 "Interface para especificar las propiedades obligatorias"
@@ -23,6 +23,11 @@ type ResultUsers implements Result {
     users: [User!]!
 }
 
+type ResultUser implements Result {
+    status: Boolean!
+    message: String!
+    user: User
+}
 
 type ResultLogin implements Result {
     status: Boolean!

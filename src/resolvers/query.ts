@@ -1,5 +1,5 @@
 import { IResolvers } from 'graphql-tools';
-import { COLLECTIONS } from '../config/constants';
+import { COLLECTIONS, EXPIRETIME } from '../config/constants';
 import { JWT } from '../lib/jwt';
 
 const resolversQuery: IResolvers = {
@@ -46,7 +46,7 @@ const resolversQuery: IResolvers = {
                 return{
                     status: true,
                     message: (user ? 'Usuario cargado  corretamente' : 'Credenciales incorrectas, sesión no iniciada'),
-                    token: (user ? new JWT().sign({user})  : null)
+                    token: (user ? new JWT().sign({user}, EXPIRETIME.H24 )  : null)
                 }
             } catch (error) {
                 return {
@@ -55,7 +55,6 @@ const resolversQuery: IResolvers = {
                     token: null
                 }
             }
-
         }
     }
 };

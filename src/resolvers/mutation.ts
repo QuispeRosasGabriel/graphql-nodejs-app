@@ -4,6 +4,18 @@ import { COLLECTIONS } from '../config/constants';
 const resolversMutation: IResolvers = {
     Mutation: {
         async register(root, {user}, {db}) {
+            // Comprobar que el usuario existe
+            const userCheck = await db.collection(COLLECTIONS.USERS)
+            .findOne({email: user.email})
+
+            if(userCheck){
+                return {
+                    status: false,
+                    message: `El email ${user.email} ya está registrado`,
+                    user: null 
+                };
+            }
+
             // Comprobar el ultimo usuario registrado para asignar ID
             const lastUser = await db.collection(COLLECTIONS.USERS)
             .find()
@@ -17,10 +29,18 @@ const resolversMutation: IResolvers = {
             // Guardar el documento Registro en la coleccion
             return await db.collection(COLLECTIONS.USERS).insertOne(user)
             .then( async () => {
-                return user;
+                return {
+                    status: true,
+                    message: `El usuario con el email ${user.email} fue registrado correctamente`,
+                    user 
+                };
             }).catch((err: Error) => {
                 console.log(err);
-                return null;
+                return {
+                    status: false,
+                    message: "Error inesperado, prueba denuevo",
+                    user: null
+                 };
             })
         }
     }
