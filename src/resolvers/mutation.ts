@@ -23,7 +23,7 @@ const resolversMutation: IResolvers = {
             .limit(1)
             .sort({registerDate: -1})
             .toArray();
-
+            
            lastUser.length === 0 ? user.id = 1 : user.id = lastUser[0].id + 1; 
             // Asignar la fecha en formato ISO en la propiedad RegisterDate 
             user.registerDate = new Date().toISOString();
