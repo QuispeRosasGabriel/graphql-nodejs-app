@@ -1,6 +1,7 @@
 import { IResolvers } from 'graphql-tools';
 import { COLLECTIONS, EXPIRETIME } from '../config/constants';
 import { JWT } from '../lib/jwt';
+import bcrypt from 'bcrypt';
 
 const resolversQuery: IResolvers = {
     Query: {
@@ -23,10 +24,9 @@ const resolversQuery: IResolvers = {
         },
         async login(root, {email, password},{db}){
             try {
-                const emailVerification = await db.collection(COLLECTIONS.USERS)
+                const user = await db.collection(COLLECTIONS.USERS)
                 .findOne({email});
-               
-                if(!emailVerification){
+                if(!user){
                         return {
                             status: false,
                             message: 'Usuario no existe',
@@ -34,10 +34,9 @@ const resolversQuery: IResolvers = {
                         } 
                 } 
                
-                const user = await db.collection(COLLECTIONS.USERS)
-                .findOne({email, password})
-               
-                if(user){
+                const passwordCheck = bcrypt.compareSync(password,user.password)
+          
+                if(passwordCheck){
                     delete user.password;
                     delete user.birthdate;
                     delete user.registerDate;
@@ -45,8 +44,8 @@ const resolversQuery: IResolvers = {
 
                 return{
                     status: true,
-                    message: (user ? 'Usuario cargado  corretamente' : 'Credenciales incorrectas, sesión no iniciada'),
-                    token: (user ? new JWT().sign({user}, EXPIRETIME.H24 )  : null)
+                    message: (passwordCheck ? 'Usuario cargado  corretamente' : 'Credenciales incorrectas, sesión no iniciada'),
+                    token: (passwordCheck ? new JWT().sign({user}, EXPIRETIME.H24 )  : null)
                 }
             } catch (error) {
                 return {
