@@ -4,6 +4,8 @@ type Query {
     users: ResultUsers
     "Para iniciar sesion de usuario"
     login(email: String!, password: String!): ResultLogin
+    "Autenticarnos mediante el token"
+    me: ResultUser
 }
 
 "Opciones Crud"
