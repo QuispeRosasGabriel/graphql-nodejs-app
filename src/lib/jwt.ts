@@ -12,7 +12,7 @@ export class JWT {
 
     public verify(token: string) {
         try {
-            return jwt.verify(token, this.secretKey) as string;
+            return jwt.verify(token, this.secretKey);
         } catch (error) {
             return MESSAGES.TOKEN_VERIFICATION_FAILED;
         }

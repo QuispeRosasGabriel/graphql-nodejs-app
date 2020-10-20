@@ -1,5 +1,5 @@
 import { IResolvers } from 'graphql-tools';
-import { COLLECTIONS, EXPIRETIME } from '../config/constants';
+import { COLLECTIONS, EXPIRETIME, MESSAGES } from '../config/constants';
 import { JWT } from '../lib/jwt';
 import bcrypt from 'bcrypt';
 
@@ -56,7 +56,19 @@ const resolversQuery: IResolvers = {
             }
         },
         me(_,__, {token} ) {
-            return;
+            let info = new JWT().verify(token);
+            if(info ===MESSAGES.TOKEN_VERIFICATION_FAILED) {
+                return {
+                    status: false,
+                    message: info,
+                    user: null
+                };
+            }
+            return {
+                status: true,
+                message: 'Usuario autenticado correctamente',
+                user: Object.values(info)[0]
+            };
         }
     }
 };
